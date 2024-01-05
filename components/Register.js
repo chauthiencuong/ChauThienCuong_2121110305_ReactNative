@@ -8,13 +8,13 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const Header = () => {
   return (
     <View style={styles.header}>
-      <Text style={styles.headerText}>Login</Text>
+      <Text style={styles.headerText}>Register</Text>
     </View>
   );
 };
 
 // Body Component
-const Body = ({ navigation }) => {
+const Body = (navigation) => {
   return (
     <View style={styles.body}>
       <View style={styles.inputContainer}>
@@ -37,7 +37,7 @@ const Body = ({ navigation }) => {
       <TouchableOpacity style={styles.forgotPasswordButton}>
         <Text style={styles.forgotPasswordText}>Quên mật khẩu?</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.loginButton} onPress={() => navigation.push('Home')}>
+      <TouchableOpacity style={styles.loginButton}>
   <Text style={styles.loginButtonText}>Sign In</Text>
 </TouchableOpacity>
 
@@ -65,8 +65,8 @@ const Footer = () => {
       </TouchableOpacity>
       
       <Text style={styles.Test}>Bạn chưa có tài khoản?</Text>
-      <TouchableOpacity style={styles.SignUpdButton}onPress={() => navigation.push('Register')}>
-        <Text style={styles.signupText} >Sign up here</Text>
+      <TouchableOpacity style={styles.SignUpdButton}>
+        <Text style={styles.signupText}>Sign up here</Text>
       </TouchableOpacity>
       
     </View>
