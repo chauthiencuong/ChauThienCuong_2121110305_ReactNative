@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, Image, TouchableOpacity } from 'react-native';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-const Product = ({ navigation, navigateToProductDetail, addToCart }) => {
+const JeweleryProduct = ({ navigateToProductDetail, addToCart }) => {
   const [data, setData] = useState(null);
-  const [numColumns, setNumColumns] = useState(1); 
+  const navigation = useNavigation(); 
 
   useEffect(() => {
     getDataUsingSimpleGetCall(); 
@@ -12,7 +14,7 @@ const Product = ({ navigation, navigateToProductDetail, addToCart }) => {
 
   const getDataUsingSimpleGetCall = () => {
     axios
-      .get('https://fakestoreapi.com/products')
+      .get('https://fakestoreapi.com/products/category/jewelery')
       .then(function (response) {
         setData(response.data);
       })
@@ -26,7 +28,7 @@ const Product = ({ navigation, navigateToProductDetail, addToCart }) => {
   
 
   const renderItem = (item) => (
-    <TouchableOpacity key={item.id} onPress={() => navigateToProductDetail(item)}>
+    <TouchableOpacity key={item.id} onPress={() => navigation.navigate('ProductDetail', { item })}>
       <View style={styles.productItem}>
         <Image source={{ uri: item.image }} style={styles.productImage} />
         <Text style={styles.productName}>{item.title}</Text>
@@ -34,13 +36,15 @@ const Product = ({ navigation, navigateToProductDetail, addToCart }) => {
       </View>
     </TouchableOpacity>
   );
-
-
+  
   return (
     <SafeAreaView style={styles.scrollContainer}>
       <ScrollView style={styles.scrollView}>
+          <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.goBack()}>
+          <Icon name="arrow-left" size={35} color="black" />
+          </TouchableOpacity>
         <View style={styles.home}>
-          <Text style={styles.Text}>Tất cả sản phẩm</Text>
+          <Text style={styles.Text}>Đồ trang sức</Text>
           {data && data.map(renderItem)}
         </View>
       </ScrollView>
@@ -52,22 +56,24 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
   },
-  home: {
+  scrollView: {
     flex: 1,
-    alignItems: 'center',
     backgroundColor: 'white',
     padding: 16,
+  },
+  home: {
+    alignItems: 'center',
   },
   Text: {
     fontSize: 30,
     fontWeight: 'bold',
     color: 'blue',
+    marginBottom: 40,
   },
   productItem: {
     alignItems: 'center',
     marginHorizontal: 5,
     marginBottom: 80,
-    marginTop:30,
   },
   productImage: {
     width: "100%",
@@ -88,6 +94,9 @@ const styles = StyleSheet.create({
     color: 'green',
     textAlign: 'center',
   },
+  goBackButton: {
+    paddingTop: 35,
+  }
 });
 
-export default Product;
+export default JeweleryProduct;

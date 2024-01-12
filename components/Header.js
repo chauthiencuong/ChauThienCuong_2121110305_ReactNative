@@ -18,7 +18,11 @@ export default function Header() {
         <Icon name="microphone" style={styles.icon} />
       </View>
       <View style={styles.upperRightIcons}>
+
+      <TouchableOpacity onPress={() => navigation.push('Bell')}>
         <Icon name="bell" style={styles.iconbell} />
+      </TouchableOpacity>
+
         <TouchableOpacity onPress={() => navigation.push('Cart')}>
           <Icon name="shopping-cart" style={styles.iconcart} />
         </TouchableOpacity>

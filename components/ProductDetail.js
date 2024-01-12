@@ -1,9 +1,12 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function ProductDetail({ route }) {
   const { item } = route.params;
+  const navigation = useNavigation();
 
   const addToCart = async (product) => {
     try {
@@ -14,7 +17,17 @@ export default function ProductDetail({ route }) {
 
       await AsyncStorage.setItem('cart', JSON.stringify(cart));
 
-      console.log('Sản phẩm đã được thêm vào giỏ hàng thành công!');
+      Alert.alert(
+        'Thông báo',
+        'Sản phẩm đã được thêm vào giỏ hàng thành công!',
+        [
+          {
+            text: 'OK',
+            onPress: () => console.log('OK Pressed'),
+          },
+        ],
+        { cancelable: false }
+      );
     } catch (error) {
       console.error('Lỗi khi thêm vào giỏ hàng:', error);
     }
@@ -22,22 +35,27 @@ export default function ProductDetail({ route }) {
 
   return (
     <View style={styles.container}>
-      <Image source={{ uri: item.image }} style={styles.productImage} />
-      <Text style={styles.productTitle}>{item.title}</Text>
-      <Text style={styles.productPrice}>Giá tiền: ${item.price}</Text>
-      <Text style={styles.productDescription}>{item.description}</Text>
-      <Text style={styles.productCategory}>Danh mục: {item.category}</Text>
-      <View style={styles.ratingContainer}>
-        <Text style={styles.productRating}>Đánh giá: </Text>
-        <Text style={styles.ratingNumber}>{item.rating.rate}</Text>
-        <Text style={styles.ratingCount}> ({item.rating.count} đánh giá)</Text>
-      </View>
-      <TouchableOpacity
-        style={styles.addToCartButton}
-        onPress={() => addToCart(item)}
-      >
-        <Text style={styles.addToCartButtonText}>Thêm vào giỏ hàng</Text>
+      <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.goBack()}>
+      <Icon name="arrow-left" size={35} color="black" />
       </TouchableOpacity>
+      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        <Image source={{ uri: item.image }} style={styles.productImage} />
+        <Text style={styles.productTitle}>{item.title}</Text>
+        <Text style={styles.productPrice}>Giá tiền: ${item.price}</Text>
+        <Text style={styles.productDescription}>{item.description}</Text>
+        <Text style={styles.productCategory}>Danh mục: {item.category}</Text>
+        <View style={styles.ratingContainer}>
+          <Text style={styles.productRating}>Đánh giá: </Text>
+          <Text style={styles.ratingNumber}>{item.rating.rate}</Text>
+          <Text style={styles.ratingCount}> ({item.rating.count} đánh giá)</Text>
+        </View>
+        <TouchableOpacity
+          style={styles.addToCartButton}
+          onPress={() => addToCart(item)}
+        >
+          <Text style={styles.addToCartButtonText}>Thêm vào giỏ hàng</Text>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 }
@@ -46,8 +64,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  scrollViewContainer: {
     padding: 16,
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingBottom: 20,  
   },
   productImage: {
     width: '100%',
@@ -104,4 +125,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
+  goBackButton: {
+    paddingTop: 35,
+  }
 });

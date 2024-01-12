@@ -2,6 +2,7 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, KeyboardAvoidingView, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native';
 
 
 // Header Component
@@ -39,7 +40,7 @@ const Body = ({ navigation }) => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.loginButton} onPress={() => navigation.push('Home')}>
   <Text style={styles.loginButtonText}>Sign In</Text>
-</TouchableOpacity>
+      </TouchableOpacity>
 
       <StatusBar style="auto" />
     </View>
@@ -48,6 +49,7 @@ const Body = ({ navigation }) => {
 
 // Footer Component
 const Footer = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.footer}>
       <View style={styles.borderContainer}>

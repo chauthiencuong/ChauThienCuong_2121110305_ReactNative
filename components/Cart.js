@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome'; 
 
 
-export default function Cart() {
+export default function Cart({navigation}) {
   const [cartItems, setCartItems] = useState([]);
   useEffect(() => {
     const loadCartItems = async () => {
@@ -104,6 +104,9 @@ export default function Cart() {
 
 return (
   <View style={styles.container}>
+    <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.goBack()}>
+        <Icon name="arrow-left" size={35} color="black" />
+    </TouchableOpacity>
     <Text style={styles.header}>Giỏ hàng của tôi</Text>
     {cartItems.length > 0 ? (
       <FlatList
@@ -156,6 +159,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
+    marginTop: 80
   },
   cartItem: {
     flexDirection: 'row',
@@ -225,5 +229,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     color: 'gray',
   },
-  
+  goBackButton: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    marginTop:20
+  }
 });

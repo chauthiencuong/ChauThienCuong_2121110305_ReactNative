@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Image, StyleSheet, ScrollView, Dimensions } from 'react-native';
 
 const Banner = () => {
@@ -24,6 +24,16 @@ const Banner = () => {
       animated: true,
     });
   };
+
+  // Tự động chuyển đổi hình ảnh sau mỗi 3 giây
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      scrollToNextImage();
+    }, 1000);
+
+    // Xóa interval khi component bị unmounted
+    return () => clearInterval(intervalId);
+  }, [currentIndex]);
 
   return (
     <ScrollView

@@ -1,17 +1,42 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Category() {
+  const navigation = useNavigation();
+
   const images = [
-    require('../images/category/phone.jpeg'),
-    require('../images/category/icons8-laptop-48.png'),
-    require('../images/category/icons8-pc-48.png'),
-    require('../images/category/icons8-earphone-64.png'),
-    require('../images/category/icons8-apple-watch-40.png'),
-    require('../images/category/icons8-ipad-48.png'),
-    require('../images/category/icons8-mouse-48.png'),
-    require('../images/category/icons8-keyboard-64.png'),
+    require('../images/category/icons8-t-shirt-48.png'),
+    require('../images/category/icons8-dress-48.png'),
+    require('../images/category/icons8-electronics-64.png'),
+    require('../images/category/icons8-jewelery-100.png'),
+    require('../images/category/icons8-other-60.png'),
   ];
+
+  const handleImagePress = (index) => {
+    // Xử lý khi ảnh được nhấn
+    // Dựa vào index để xác định màn hình đích
+    switch (index) {
+      case 0:
+        navigation.navigate('MenProduct');
+        break;
+      case 1:
+        navigation.navigate('WomenProduct');
+        break;
+      case 2:
+        navigation.navigate('ElectronicsProduct');
+        break;
+      case 3:
+        navigation.navigate('JeweleryProduct');
+        break;
+      case 4:
+        navigation.navigate('ManHinh5');
+        break;
+      default:
+        // Xử lý khi không tìm thấy index
+        break;
+    }
+  };
 
   return (
     <ScrollView
@@ -20,7 +45,9 @@ export default function Category() {
       contentContainerStyle={styles.imageContainer}
     >
       {images.map((image, index) => (
-        <Image key={index} source={image} style={styles.image} resizeMode="contain" />
+        <TouchableOpacity key={index} onPress={() => handleImagePress(index)}>
+          <Image source={image} style={styles.image} resizeMode="contain" />
+        </TouchableOpacity>
       ))}
     </ScrollView>
   );
@@ -38,7 +65,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   image: {
-    width: 50,
+    width: 60,
     height: 80,
     marginHorizontal: 10,
   },
