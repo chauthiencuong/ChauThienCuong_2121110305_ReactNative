@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, KeyboardAvoidingView, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-
 
 // Header Component
 const Header = () => {
@@ -16,30 +16,73 @@ const Header = () => {
 
 // Body Component
 const Body = ({ navigation }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [apiUserData, setApiUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchApiUserData = async () => {
+      try {
+        const response = await axios.get('https://fakestoreapi.com/users/1');
+        setApiUserData(response.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error.message);
+      }
+    };
+
+    fetchApiUserData();
+  }, []);
+
+  const handleLogin = () => {
+    if (!username || !password) {
+      alert('Vui lòng nhập cả tên người dùng và mật khẩu');
+      return;
+    }
+
+    if (!apiUserData) {
+      alert('Không tìm nạp được dữ liệu người dùng. Vui lòng thử lại.');
+      return;
+    }
+
+    const apiUsername = apiUserData.username;
+    const apiPassword = apiUserData.password;
+
+    if (username === apiUsername && password === apiPassword) {
+      alert('Đăng nhập thành công!');
+      navigation.push('Home');
+    } else {
+      alert('Sai username hoặc password');
+    }
+  };
+
   return (
     <View style={styles.body}>
       <View style={styles.inputContainer}>
         <Icon name="user" style={styles.icon} />
         <TextInput
-          placeholder="Bạn hãy nhập username"
+          placeholder="Enter your username"
           placeholderTextColor="rgba(255, 255, 255, 0.5)"
           style={styles.txtInput}
+          value={username}
+          onChangeText={setUsername}
         />
       </View>
       <View style={styles.inputContainer}>
         <Icon name="lock" style={styles.icon} />
         <TextInput
-          placeholder="Bạn hãy nhập password"
+          placeholder="Enter your password"
           placeholderTextColor="rgba(255, 255, 255, 0.5)"
           style={styles.txtInput}
           secureTextEntry={true}
+          value={password}
+          onChangeText={setPassword}
         />
       </View>
       <TouchableOpacity style={styles.forgotPasswordButton}>
-        <Text style={styles.forgotPasswordText}>Quên mật khẩu?</Text>
+        <Text style={styles.forgotPasswordText}>Forgot password?</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.loginButton} onPress={() => navigation.push('Home')}>
-  <Text style={styles.loginButtonText}>Sign In</Text>
+      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+        <Text style={styles.loginButtonText}>Sign In</Text>
       </TouchableOpacity>
 
       <StatusBar style="auto" />
@@ -65,12 +108,11 @@ const Footer = () => {
         <Icon name="facebook" style={styles.iconfacebook} />
         <Text style={styles.loginButtonText}>Sign in with Facebook</Text>
       </TouchableOpacity>
-      
-      <Text style={styles.Test}>Bạn chưa có tài khoản?</Text>
-      <TouchableOpacity style={styles.SignUpdButton}onPress={() => navigation.push('Register')}>
-        <Text style={styles.signupText} >Sign up here</Text>
+
+      <Text style={styles.Test}>Don't have an account?</Text>
+      <TouchableOpacity style={styles.SignUpdButton} onPress={() => navigation.push('Register')}>
+        <Text style={styles.signupText}>Sign up here</Text>
       </TouchableOpacity>
-      
     </View>
   );
 };

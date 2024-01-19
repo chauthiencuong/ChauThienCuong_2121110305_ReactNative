@@ -8,15 +8,7 @@ export default function Header() {
 
   return (
     <View style={styles.header}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          placeholder="Tìm kiếm"
-          placeholderTextColor="black"
-          style={styles.txtInput}
-        />
-        <Icon name="search" style={styles.icon} />
-        <Icon name="microphone" style={styles.icon} />
-      </View>
+      
       <View style={styles.upperRightIcons}>
 
       <TouchableOpacity onPress={() => navigation.push('Bell')}>

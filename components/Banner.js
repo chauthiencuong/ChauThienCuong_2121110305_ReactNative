@@ -25,13 +25,11 @@ const Banner = () => {
     });
   };
 
-  // Tự động chuyển đổi hình ảnh sau mỗi 3 giây
   useEffect(() => {
     const intervalId = setInterval(() => {
       scrollToNextImage();
     }, 1000);
 
-    // Xóa interval khi component bị unmounted
     return () => clearInterval(intervalId);
   }, [currentIndex]);
 
@@ -62,6 +60,7 @@ const styles = StyleSheet.create({
   bannerImage: {
     width: Dimensions.get('window').width,
     height: 200,
+    marginTop: 35
   },
 });
 

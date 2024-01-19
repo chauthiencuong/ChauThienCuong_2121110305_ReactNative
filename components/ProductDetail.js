@@ -3,6 +3,8 @@ import { View, StyleSheet, Text, Image, TouchableOpacity, ScrollView, Alert } fr
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Footer from './Footer';
+
 
 export default function ProductDetail({ route }) {
   const { item } = route.params;
@@ -56,6 +58,7 @@ export default function ProductDetail({ route }) {
           <Text style={styles.addToCartButtonText}>Thêm vào giỏ hàng</Text>
         </TouchableOpacity>
       </ScrollView>
+      <Footer />
     </View>
   );
 }

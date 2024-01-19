@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, SafeAreaView, ScrollView, Image, TouchableOpaci
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Footer from './Footer';
 
 const ElectronicsProduct = ({ navigateToProductDetail, addToCart }) => {
   const [data, setData] = useState(null);
@@ -48,6 +49,7 @@ const ElectronicsProduct = ({ navigateToProductDetail, addToCart }) => {
           {data && data.map(renderItem)}
         </View>
       </ScrollView>
+      <Footer />
     </SafeAreaView>
   );
 };
