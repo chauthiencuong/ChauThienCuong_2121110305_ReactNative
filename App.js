@@ -14,6 +14,7 @@ import Info from './components/Info';
 import Heart from './components/Heart';
 import Comment from './components/Comment';
 import Bell from './components/Bell';
+import Order from './components/Order';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,7 +36,7 @@ export default function App() {
           <Stack.Screen name="Heart" component={Heart} options={{ headerShown: false }} />
           <Stack.Screen name="Comment" component={Comment} options={{ headerShown: false }} />
           <Stack.Screen name="Bell" component={Bell} options={{ headerShown: false }} />
-
+          <Stack.Screen name="Order" component={Order} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
   );

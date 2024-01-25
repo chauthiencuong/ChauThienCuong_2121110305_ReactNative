@@ -38,22 +38,23 @@ const Body = ({ navigation }) => {
       alert('Vui lòng nhập cả tên người dùng và mật khẩu');
       return;
     }
-
+  
     if (!apiUserData) {
       alert('Không tìm nạp được dữ liệu người dùng. Vui lòng thử lại.');
       return;
     }
-
+  
     const apiUsername = apiUserData.username;
     const apiPassword = apiUserData.password;
-
+  
     if (username === apiUsername && password === apiPassword) {
       alert('Đăng nhập thành công!');
-      navigation.push('Home');
+      navigation.push('Home', { userData: apiUserData });
     } else {
       alert('Sai username hoặc password');
     }
   };
+  
 
   return (
     <View style={styles.body}>

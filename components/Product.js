@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TextInput, FlatList, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TextInput, FlatList, Image, TouchableOpacity, Dimensions, Modal } from 'react-native';
 import axios from 'axios';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -9,18 +9,18 @@ const Product = ({ navigation, navigateToProductDetail, addToCart }) => {
   const [originalData, setOriginalData] = useState(null);
   const SearchRef = useRef(null);
   const windowWidth = Dimensions.get('window').width;
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [sortOrder, setSortOrder] = useState('asc');
+
 
   useEffect(() => {
     getDataUsingSimpleGetCall();
   }, []);
 
   useEffect(() => {
-    // Kiểm tra khi giá trị của ô input thay đổi
     if (search === '') {
-      // Nếu ô input trống, load dữ liệu lại ban đầu
       setData(originalData);
     } else {
-      // Nếu ô input không trống, thực hiện tìm kiếm
       onSearch(search);
     }
   }, [search]);
@@ -30,7 +30,7 @@ const Product = ({ navigation, navigateToProductDetail, addToCart }) => {
       .get('https://fakestoreapi.com/products')
       .then(function (response) {
         setData(response.data);
-        setOriginalData(response.data); // Lưu dữ liệu ban đầu
+        setOriginalData(response.data); 
       })
       .catch(function (error) {
         alert(error.message);
@@ -50,6 +50,57 @@ const Product = ({ navigation, navigateToProductDetail, addToCart }) => {
       setData(tempList);
     }
   };
+  const openModal = () => {
+    setModalVisible(true);
+  };
+  
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+  const sortProductsByName = () => {
+    const sortedData = [...data]; 
+    sortedData.sort((a, b) => {
+      const nameA = a.title.toUpperCase();
+      const nameB = b.title.toUpperCase();
+  
+      if (sortOrder === 'asc') {
+        return nameA.localeCompare(nameB);
+      } else {
+        return nameB.localeCompare(nameA);
+      }
+    });
+  
+    setData(sortedData);
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    closeModal();
+  };
+
+  const sortProductsByPriceAscending = () => {
+    const sortedData = [...data];
+    sortedData.sort((a, b) => a.price - b.price);
+  
+    setData(sortedData);
+    closeModal();
+  };
+  
+  const sortProductsByPriceDescending = () => {
+    const sortedData = [...data];
+    sortedData.sort((a, b) => b.price - a.price);
+  
+    setData(sortedData);
+    closeModal();
+  };
+
+  const sortProductsByRateDescending = () => {
+    const sortedData = [...data];
+    sortedData.sort((a, b) => b.rating.rate - a.rating.rate);
+  
+    setData(sortedData);
+    closeModal();
+  };
+  
+  
+  
 
   const renderItem = ({ item }) => (
     <TouchableOpacity onPress={() => navigateToProductDetail(item)}>
@@ -85,12 +136,13 @@ const Product = ({ navigation, navigateToProductDetail, addToCart }) => {
       }}
     />
   )}
-  <TouchableOpacity onPress={() => {/* Xử lý sự kiện khi nhấn vào nút/hình ảnh */}}>
-    <Image
-      source={require('../images/footer/filter_.png')}
-      style={styles.filter}
-    />
-  </TouchableOpacity>
+  <TouchableOpacity onPress={openModal}>
+  <Image
+    source={require('../images/footer/filter_.png')}
+    style={styles.filter}
+  />
+</TouchableOpacity>
+
 </View>
 
 
@@ -101,6 +153,32 @@ const Product = ({ navigation, navigateToProductDetail, addToCart }) => {
         numColumns={2}
         contentContainerStyle={styles.home}
       />
+
+<Modal
+  visible={isModalVisible}
+  animationType="slide"
+  transparent={true}
+  onRequestClose={closeModal}
+>
+  <View style={styles.modalContainer}>
+  <TouchableOpacity onPress={sortProductsByName}>
+  <Text style={styles.textsort}>Theo tên</Text>
+</TouchableOpacity>
+
+<TouchableOpacity onPress={sortProductsByPriceAscending}>
+  <Text style={styles.textsort}>Giá tăng dần</Text>
+</TouchableOpacity>
+
+<TouchableOpacity onPress={sortProductsByPriceDescending}>
+  <Text style={styles.textsort}>Giá giảm dần</Text>
+</TouchableOpacity>
+
+    <TouchableOpacity onPress={sortProductsByRateDescending}>
+      <Text style={styles.textsort}>Đánh giá cao</Text>
+    </TouchableOpacity>
+  </View>
+</Modal>
+
     </SafeAreaView>
   );
 };
@@ -173,7 +251,23 @@ const styles = StyleSheet.create({
   filter: {
     width: 50, 
     height: 40, 
-  }
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+  },
+  textsort: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: 'white',
+    textAlign: 'center',
+  },
 });
 
 export default Product;

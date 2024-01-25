@@ -6,11 +6,11 @@ export default function Category() {
   const navigation = useNavigation();
 
   const images = [
-    require('../images/category/icons8-t-shirt-48.png'),
-    require('../images/category/icons8-dress-48.png'),
-    require('../images/category/icons8-electronics-64.png'),
-    require('../images/category/icons8-jewelery-100.png'),
-    require('../images/category/icons8-other-60.png'),
+    require('../images/category/men-clothing.png'),
+    require('../images/category/woman-clothes.png'),
+    require('../images/category/computer.png'),
+    require('../images/category/jewelery-stand.png'),
+    require('../images/category/other.png'),
   ];
 
   const handleImagePress = (index) => {
@@ -30,10 +30,9 @@ export default function Category() {
         navigation.navigate('JeweleryProduct');
         break;
       case 4:
-        navigation.navigate('ManHinh5');
+        navigation.navigate('Info');
         break;
       default:
-        // Xử lý khi không tìm thấy index
         break;
     }
   };
